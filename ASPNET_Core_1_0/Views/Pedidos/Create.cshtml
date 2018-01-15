@@ -1,0 +1,49 @@
+@model ASPNET_Core_1_0.Models.Pedidos
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Selecione um cliente</h2>
+
+<form asp-action="Create">
+    <div class="form-horizontal">
+        <h4>Pedidos</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="ClienteId" class="col-md-2 control-label">Cliente</label>
+            <div class="col-md-6">
+                <select asp-for="ClienteId" asp-items="ViewBag.Clientes" class="form-control"></select>
+                <span asp-validation-for="ClienteId" class="text-danger"></span>
+            </div>
+        </div>
+        @*<div class="form-group">
+            <label asp-for="ClienteNome" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ClienteNome" class="form-control" />
+                <span asp-validation-for="ClienteNome" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="DataPedido" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="DataPedido" class="form-control" />
+                <span asp-validation-for="DataPedido" class="text-danger"></span>
+            </div>
+        </div>*@
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Fazer pedido" class="btn btn-success" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Voltar para lista de pedidos</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

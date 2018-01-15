@@ -1,0 +1,47 @@
+@model IEnumerable<ASPNET_Core_1_0.Models.Pedidos>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Peididos</h2>
+
+<p>
+    <a asp-action="Create">Adicionar novo pedido</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    Codigo do cliente
+                </th>
+                <th>
+                    Nome
+                </th>
+                <th>
+                    Data Pedido
+                </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ClienteId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ClienteNome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataPedido)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Detalhes</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Excluir</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

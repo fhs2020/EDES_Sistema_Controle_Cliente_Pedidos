@@ -1,0 +1,50 @@
+@model ASPNET_Core_1_0.Models.Pedidos
+
+@{
+    ViewData["Title"] = "AdicionarItems";
+}
+
+<h2>Adicionar items</h2>
+
+<form asp-action="AdicionarItems">
+    <div class="form-horizontal">
+        <h4>Pedido para @Model.ClienteNome</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="ClienteId" />
+        <div class="form-group">
+            
+            <table>
+                <tr>
+                    <th>Descrição</th>
+                    <th>Quantidade</th>
+                </tr>
+                @foreach(var item in ViewBag.ListaProdutos)
+                {
+                    <tr>
+                        <td>@item.Descricao</td>
+                        <td><input class="touchspin1 form-control quantidade" type="text" value="" name="quantidade" style="display: block;"></td>
+
+                    </tr>
+
+                }
+            </table>
+
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Salvar Pedido" class="btn btn-success" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Voltar para lista de pedidos</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

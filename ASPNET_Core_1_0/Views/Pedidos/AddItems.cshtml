@@ -1,0 +1,115 @@
+@model ASPNET_Core_1_0.Models.Pedidos
+
+<h2 style="margin-left: 50px;">Adicionar items</h2>
+
+@*<form asp-action="AdicionarItems">
+        <div class="form-horizontal">
+            <h4>Pedido para @Model.ClienteNome</h4>
+            <hr />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="ClienteId" />
+            <div class="form-group">
+
+                <table>
+                    <tr>
+                        <th>Descrição</th>
+                        <th>Quantidade</th>
+                    </tr>
+                    @foreach (var item in ViewBag.ListaProdutos)
+                    {
+                        <tr>
+                            <td>@item.Descricao</td>
+                            <td><input class="touchspin1 form-control quantidade" type="text" value="" name="quantidade" style="display: block;"></td>
+
+                        </tr>
+
+                    }
+                </table>
+
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Salvar Pedido" class="btn btn-success" />
+                </div>
+            </div>
+        </div>
+    </form>*@
+
+
+<div class="col-md-9">
+
+    @*<div class="ibox">
+            <div class="ibox-title">
+                <span class="pull-right">(<strong>5</strong>) items</span>
+                <h5>Items in your cart</h5>
+            </div>
+
+        </div>*@
+
+</div>
+<div class="ibox-content col-md-6" style="margin-left: 50px;">
+    <div class="table-responsive">
+        <table class="table shoping-cart-table">
+
+            <tr>
+                <th>Descrição</th>
+                <th>Quantidade</th>
+            </tr>
+
+
+
+            @*<td width="90">
+                    <div class="cart-product-imitation">
+                    </div>
+                </td>*@
+
+
+            @foreach (var item in ViewBag.ListaProdutos)
+            {
+
+                <tr>
+
+                    <td class="desc">
+                        <h3>
+                            <a class="text-navy" href="#">
+                                @item.Descricao
+                            </a>
+                        </h3>
+
+                    </td>
+
+                    <td width="65">
+                        <input class="form-control" type="text" placeholder="0">
+                    </td>
+                    <td width="65">
+                        <button class="btn btn-primary pull-right"><i class="fa fa fa-shopping-cart"></i> Adicionar item</button>
+                    </td>
+                </tr>
+            }
+
+
+
+        </table>
+    </div>
+
+</div>
+
+
+
+<div class="ibox-content col-md-6" style="margin-left: 50px;">
+    <button class="btn btn-success pull-right"><i class="fa fa-list"></i> Finalizar pedido</button>
+    <a asp-action="Index">Voltar para lista de pedidos</a>
+    @*<button class="btn btn-white"><i class="fa fa-arrow-left"></i> Continue shopping</button>*@
+</div>
+
+
+
+
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
