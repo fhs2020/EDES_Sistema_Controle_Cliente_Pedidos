@@ -1,0 +1,32 @@
+@model ASPNET_Core_1_0.Models.Pedidos
+
+<p>
+    <h2 asp-action="Create">Pedido para cliente @ViewBag.Cliente  feito com sucesso!</h2>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Descrição
+            </th>
+            <th>
+                Quantidade
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in ViewBag.ListaItems)
+        {
+            <tr>
+                <td>
+                    @item.Descricao
+                </td>
+                <td>
+                    @item.Quantidade
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

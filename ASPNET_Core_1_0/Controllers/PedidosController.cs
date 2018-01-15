@@ -16,7 +16,7 @@ namespace ASPNET_Core_1_0.Controllers
 
         public PedidosController(ApplicationDbContext context)
         {
-            _context = context;    
+            _context = context;
         }
 
         // GET: Pedidos
@@ -83,6 +83,50 @@ namespace ASPNET_Core_1_0.Controllers
             return View(pedidos);
         }
 
+        [HttpGet]
+        public IActionResult FinalizarPedidos()
+        {
+            //var pedido = _context.Pedidos.Where(x => x.Id == pedidoId).LastOrDefault();
+
+
+            //var cliente = _context.Cliente.Where(x => x.ID == pedido.ClienteId).LastOrDefault();
+
+            //ViewBag.Cliente = cliente;
+
+            //var items = _context.ItemPedido.Where(x => x.PedidoId == pedidoId).ToList();
+
+            //pedido.ListaItems = new List<ItemPedido>();
+
+            //pedido.ListaItems = items;
+
+            //ViewBag.ListaItems = items;
+
+            return View();
+
+        }
+
+        [HttpPost]
+        public IActionResult FinalizarPedidos(int? pedidoId)
+        {
+            var pedido = _context.Pedidos.Where(x => x.Id == pedidoId).LastOrDefault();
+
+
+            var cliente = _context.Cliente.Where(x => x.ID == pedido.ClienteId).LastOrDefault();
+
+            ViewBag.Cliente = cliente.Nome;
+
+            var items = _context.ItemPedido.Where(x => x.PedidoId == pedidoId).ToList();
+
+            pedido.ListaItems = new List<ItemPedido>();
+
+            pedido.ListaItems = items;
+
+            ViewBag.ListaItems = items;
+
+            return View(pedido);
+
+        }
+
 
         public IActionResult AddItems(Pedidos pedidos)
         {
@@ -98,10 +142,65 @@ namespace ASPNET_Core_1_0.Controllers
 
 
             return View(pedidos);
-         
+
         }
 
 
+        [HttpPost]
+        public async Task<IActionResult> AddItemsToOrder(int pedidoId, int produtoID, int quantidade)
+        {
+
+            var pedido = _context.Pedidos.Where(x => x.Id == pedidoId).LastOrDefault();
+
+            var produto = _context.Produto.Where(x => x.ID == produtoID).LastOrDefault();
+
+            var searchPedido = _context.ItemPedido.Where(x => x.PedidoId == pedidoId).ToList();
+
+            var itemPedido = new ItemPedido();
+
+
+            var updateItem = searchPedido.Where(x => x.ProdutoID == produtoID).LastOrDefault();
+
+            if (updateItem != null)
+            {
+                updateItem.Quantidade = quantidade;
+
+                _context.Update(updateItem);
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                itemPedido.ProdutoID = produtoID;
+                itemPedido.PedidoId = pedidoId;
+                itemPedido.Quantidade = quantidade;
+                itemPedido.Descricao = produto.Descricao;
+
+                _context.Add(itemPedido);
+                await _context.SaveChangesAsync();
+            }
+
+            var cliente = _context.Cliente.Where(x => x.ID == pedido.ClienteId).LastOrDefault();
+
+            var produtos = _context.Produto.ToList();
+
+            ViewBag.ListaProdutos = produtos;
+
+            var listaDeItems = _context.ItemPedido.Where(x => x.PedidoId == pedidoId).ToList();
+
+            return Json(listaDeItems);
+
+        }
+
+        [HttpPost]
+        public IActionResult OnPageLoad(int pedidoId)
+        {
+            var pedido = _context.Pedidos.Where(x => x.Id == pedidoId).LastOrDefault();
+
+            var listaDeItems = _context.ItemPedido.Where(x => x.PedidoId == pedidoId).ToList();
+
+            return Json(listaDeItems);
+
+        }
 
 
         // GET: Pedidos/Edit/5

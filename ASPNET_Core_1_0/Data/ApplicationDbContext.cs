@@ -28,5 +28,7 @@ namespace ASPNET_Core_1_0.Data
         public DbSet<ASPNET_Core_1_0.Models.Cliente> Cliente { get; set; }
 
         public DbSet<ASPNET_Core_1_0.Models.Pedidos> Pedidos { get; set; }
+
+        public DbSet<ASPNET_Core_1_0.Models.ItemPedido> ItemPedido { get; set; }
     }
 }

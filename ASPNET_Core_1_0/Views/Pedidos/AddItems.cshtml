@@ -1,6 +1,6 @@
-@model ASPNET_Core_1_0.Models.Pedidos
+Ôªø@model ASPNET_Core_1_0.Models.Pedidos
 
-<h2 style="margin-left: 50px;">Adicionar items</h2>
+<h2 style="margin-left: 50px;">Adicionar items para @Model.ClienteNome</h2>
 
 @*<form asp-action="AdicionarItems">
         <div class="form-horizontal">
@@ -13,7 +13,7 @@
 
                 <table>
                     <tr>
-                        <th>DescriÁ„o</th>
+                        <th>Descri√ß√£o</th>
                         <th>Quantidade</th>
                     </tr>
                     @foreach (var item in ViewBag.ListaProdutos)
@@ -23,7 +23,6 @@
                             <td><input class="touchspin1 form-control quantidade" type="text" value="" name="quantidade" style="display: block;"></td>
 
                         </tr>
-
                     }
                 </table>
 
@@ -51,14 +50,13 @@
 </div>
 <div class="ibox-content col-md-6" style="margin-left: 50px;">
     <div class="table-responsive">
+        <input id="pedidoId" type="hidden" asp-for="@Model.Id" />
         <table class="table shoping-cart-table">
-
             <tr>
-                <th>DescriÁ„o</th>
+                <th>Condigo do produto</th>
+                <th>Descri√ß√£o</th>
                 <th>Quantidade</th>
             </tr>
-
-
 
             @*<td width="90">
                     <div class="cart-product-imitation">
@@ -70,46 +68,181 @@
             {
 
                 <tr>
-
-                    <td class="desc">
+                    <td>
+                        <input type="submit" value="@item.ID" class="produtoId" readonly="readonly" />
+                    </td>
+                    <td id="" class="desc">
                         <h3>
                             <a class="text-navy" href="#">
                                 @item.Descricao
                             </a>
                         </h3>
-
-                    </td>
-
-                    <td width="65">
-                        <input class="form-control" type="text" placeholder="0">
                     </td>
                     <td width="65">
-                        <button class="btn btn-primary pull-right"><i class="fa fa fa-shopping-cart"></i> Adicionar item</button>
+                        <input id="quantidade" class="quantidade form-control" type="text" placeholder="0">
+                    </td>
+                    <td width="65">
+                        <button class="addItem btn btn-primary pull-right"><i class="fa fa fa-shopping-cart"></i> Adicionar item</button>
                     </td>
                 </tr>
             }
-
-
-
         </table>
     </div>
-
 </div>
+<br />
+<div class="col-md-6" style="margin-left: 50px;">&nbsp;&nbsp;<br /></div>
+
+
+<hr />
+
+<div class="row">
+
+    <div class="col-md-6" style="margin-left: 50px;">
+        <h3>Produdos Adicionados</h3>
+        <table class="table table-striped" id="myTable" style="margin-left: 50px;">
+            <thead>
+                <tr>
+                    <th>Codigo</th>
+                    <th>Descri√ß√£o</th>
+                    <th>Quantidade</th>
+                    @*<th>Action(Editar)</th>*@
+                    <th>Excluir</th>
+                </tr>
+            </thead>
+            <tbody id="SetItemList">
+                <tr id="LoadingStatus" style="color:red"></tr>
+            </tbody>
+        </table>
+    </div>
+    <br />
 
 
 
-<div class="ibox-content col-md-6" style="margin-left: 50px;">
-    <button class="btn btn-success pull-right"><i class="fa fa-list"></i> Finalizar pedido</button>
-    <a asp-action="Index">Voltar para lista de pedidos</a>
-    @*<button class="btn btn-white"><i class="fa fa-arrow-left"></i> Continue shopping</button>*@
+    <div class="ibox-content col-md-6" style="margin-left: 50px;">
+        @*<button id="finalizarPedido" class="btn btn-success pull-right"><i class="fa fa-list"></i> Finalizar pedido</button>*@
+
+        @using (Html.BeginForm("FinalizarPedidos", "Pedidos"))
+    {
+        <input type="hidden" class="btn btn-primary pull-right" id="@Model.Id" name="pedidoId" value="@Model.Id" />
+        <input type="submit" class="btn btn-primary pull-right" value="FinalizarPedidos" />
+}
+
+        <a asp-action="Index">Voltar para lista de pedidos</a>
+        @*<button class="btn btn-white"><i class="fa fa-arrow-left"></i> Continue shopping</button>*@
+        <div>&nbsp;<br /></div>
+    </div>
+    <div>&nbsp;<br /></div>
 </div>
-
-
-
-
-
+<div class="row">
+    <p>&nbsp;</p>
+    <hr />
+    <p>&nbsp;</p>
+    <hr />
+</div>
 
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript">
+
+        //$("#LoadingStatus").html("Carregando....");
+
+        var pedidoId = $("#pedidoId").val();
+
+
+        $('.addItem').click(function () {
+
+
+            var produtoID = $(this).closest("tr").find(".produtoId").val();
+            var quantidade = $(this).closest("tr").find('.quantidade').val();
+            debugger;
+            var url = "/Pedidos/AddItemsToOrder";
+
+            $.ajax({
+                url: url,
+                data: { pedidoId: pedidoId, produtoID: produtoID, quantidade: quantidade },
+                type: "POST",
+                cache: false,
+                success: function (ListaItems) {
+                    debugger;
+                    var SetData = $("#SetItemList");
+                    for (var i = 0; i < ListaItems.length; i++) {
+                        debugger;
+                        var Data = "<tr id='" + ListaItems[i].id + "'>" +
+                            "<td>" + ListaItems[i].id + "</td>" +
+                            "<td>" + ListaItems[i].descricao + "</td>" +
+                            "<td>" + ListaItems[i].quantidade + "</td>" +
+                            //"<td>" + "<a href='#' class='btn btn-warning' onclick='EditarOrcamento(" + ListaItems[i].ID + ")' ><span class='glyphicon glyphicon-edit'></span></a>" + "</td>" +
+                            "<td>" + "<a href='#' class='btn btn-danger' onclick='DeleteStudentRecord(" + ListaItems[i].ID + ")'><span class='glyphicon glyphicon-trash'></span></a>" + "</td>" +
+                            "</tr>";
+                        SetData.append(Data);
+                        //$("#LoadingStatus").html(" ");
+
+
+                        window.location.reload(true);
+                    }
+                }
+            });
+
+        });
+
+
+
+        $(document).ready(function () {
+
+            var url = "/Pedidos/OnPageLoad";
+
+            $.ajax({
+                url: url,
+                data: { pedidoId: pedidoId },
+                type: "POST",
+                cache: false,
+                success: function (ListaItems) {
+                    debugger;
+                    var SetData = $("#SetItemList");
+                    for (var i = 0; i < ListaItems.length; i++) {
+                        debugger;
+                        var Data = "<tr id='" + ListaItems[i].id + "'>" +
+                            "<td>" + ListaItems[i].id + "</td>" +
+                            "<td>" + ListaItems[i].descricao + "</td>" +
+                            "<td>" + ListaItems[i].quantidade + "</td>" +
+                            //"<td>" + "<a href='#' class='btn btn-warning' onclick='EditarOrcamento(" + ListaItems[i].ID + ")' ><span class='glyphicon glyphicon-edit'></span></a>" + "</td>" +
+                            "<td>" + "<a href='#' class='btn btn-danger' onclick='DeleteStudentRecord(" + ListaItems[i].ID + ")'><span class='glyphicon glyphicon-trash'></span></a>" + "</td>" +
+                            "</tr>";
+                        SetData.append(Data);
+                        //$("#LoadingStatus").html(" ");
+
+
+                    }
+                }
+            });
+
+        });
+
+
+
+        $('#finalizarPedido').click(function () {
+
+            debugger;
+            var url = "/Pedidos/FinalizarPedidos";
+
+            $.ajax({
+                url: url,
+                data: { pedidoId: pedidoId, },
+                type: "POST",
+                cache: false,
+                success: function (data) {
+
+                }
+            });
+        });
+
+
+
+
+
+    </script>
+
+
 }

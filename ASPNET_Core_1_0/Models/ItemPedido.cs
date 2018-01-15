@@ -11,5 +11,6 @@ namespace ASPNET_Core_1_0.Models
         public int PedidoId { get; set; }
         public int ProdutoID { get; set; }
         public int Quantidade { get; set; }
+        public String Descricao { get; set; }
     }
 }

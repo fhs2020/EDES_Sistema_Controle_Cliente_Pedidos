@@ -8,9 +8,10 @@ using ASPNET_Core_1_0.Data;
 namespace ASPNET_Core_1_0.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180115162526_Descricao do Item no pedido")]
+    partial class DescricaodoItemnopedido
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.3")

@@ -1,0 +1,36 @@
+@model ASPNET_Core_1_0.Models.ItemPedido
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ItemPedido</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.PedidoId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PedidoId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ProdutoID)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ProdutoID)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Quantidade)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Quantidade)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
